@@ -1,6 +1,28 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
+    const location=useLocation();
+    const navigate=useNavigate();
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+
+        if (params.get("success") === "true") {
+          setMessageType("success");
+          setMessage("Sosyal platform ile giriş başarılı. Hoşgeldiniz " + params.get("email"));
+
+          setTimeout(() => {
+            navigate("/");
+            
+          }, 1500);
+        }
+        if (params.get("error") === "no_email") {
+          setMessageType("error");
+          setMessage("Google hesabınızdan email alınamadı.");
+        }
+      }, [location]);
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState(null);
@@ -9,10 +31,11 @@ const LoginForm = () => {
         e.preventDefault();
         setMessage(null);
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/login', {
+            const response = await fetch('http://localhost:5000/api/login', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ email, password }),
+                credentials: 'include',
             });
             const data = await response.json();
 
@@ -22,6 +45,10 @@ const LoginForm = () => {
             } else {
                 setMessageType("success");
                 setMessage('Giriş başarılı.');
+                setTimeout(() => {
+
+                    navigate("/");
+                }, 1500);
             }
         } catch (error) {
             setMessageType("error");
@@ -30,15 +57,15 @@ const LoginForm = () => {
     };
 
 const googleIleGiris=()=>{
-    window.location.href = 'http://127.0.0.1:5000/api/sosyal/google';
+    window.location.href = 'http://localhost:5000/api/sosyal/google';
 }
 
 const githubIleGiris=()=>{
-  window.location.href = 'http://127.0.0.1:5000/api/sosyal/github';
+  window.location.href = 'http://localhost:5000/api/sosyal/github';
 }
 
 const linkedinIleGiris=()=>{
-  window.location.href = 'http://127.0.0.1:5000/api/sosyal/linkedin';
+  window.location.href = 'http://localhost:5000/api/sosyal/linkedin';
 }
   return (
     <div className="form-box login">

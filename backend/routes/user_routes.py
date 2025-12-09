@@ -1,6 +1,7 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, session
 from database import db
 from models.user import User
+from auth.decarators import giris_kontrolu
 
 user_routes = Blueprint('user_routes', __name__, url_prefix='/api')
 
@@ -23,8 +24,10 @@ def register():
     db.session.add(user)
     db.session.commit()
     
-    return jsonify({"message":"Kayıt başarılı. Giriş yapabilirsiniz.",
-                    "user":{"id": user.id, "email": user.email}}), 201
+    return jsonify({
+        "message":"Giriş başarılı.",
+        "user":{"id": user.id, "email": user.email}
+    }), 200
     
 @user_routes.route("/login", methods=['POST'])
 def login():
@@ -40,6 +43,25 @@ def login():
     if not user or not user.check_password(password):
         return jsonify({"message":"Geçersiz email veya şifre"}), 401
     
-    return jsonify({"message":"Giriş başarılı.",
-                    "user":{"id": user.id, "email": user.email}}), 200
+    session['user_email'] = user.email
+    session['user_id'] = user.id
+    
+    return jsonify({
+        "message":"Giriş başarılı.",
+        "user":{"id": user.id, "email": user.email}
+    }), 200
 
+@user_routes.route("/logout", methods=['POST'])
+def logout():
+    session.pop('user_email', None)
+    session.pop('user_id', None)
+    return jsonify({"message":"Çıkış başarılı.", "is_logged_in": False}), 200
+
+@user_routes.route("/check_session", methods=['GET'])
+@giris_kontrolu
+def check_session():
+    return jsonify({
+        "is_logged_in": True,
+        "user": {"id": session.get('user_id'),
+                 "email": session.get('user_email')}
+    }), 200

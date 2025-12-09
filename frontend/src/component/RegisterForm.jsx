@@ -1,6 +1,9 @@
 import React, {useState} from "react";
+import { useNavigate } from "react-router-dom";
 
 const RegisterForm = () => {
+    const navigate=useNavigate();
+    
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState(null);
@@ -11,12 +14,13 @@ const RegisterForm = () => {
         setMessage(null);
 
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/register', {
+            const response = await fetch('http://localhost:5000/api/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ email, password }),
+                credentials: 'include', // backend oturum çerezi için şart
             });
             const data = await response.json();
 
@@ -25,20 +29,24 @@ const RegisterForm = () => {
                 setMessage(data.message || 'Kayıt başarısız oldu.');
             } else {
                 setMessageType("success");
-                setMessage('Kayıt başarılı. Giriş yapabilirsiniz.');
+                setMessage('Kayıt başarılı. Ana sayfaya yönlendiriliyorsunuz.');
+                
+                setTimeout(() => {
+                  navigate("/");
+                }, 1500);
             }
         } catch (error) {
             setMessageType("error");
             setMessage('Bir hata oluştu. Lütfen tekrar deneyiniz. (Backend çalışıyor mu?)');
         }
     };
-const googleIleGiris = () => {
+const googleIleKayit = () => {
   window.location.href = "http://localhost:5000/api/sosyal/google";
 };
-const githubIleGiris = () => {
+const githubIleKayit = () => {
   window.location.href = "http://localhost:5000/api/sosyal/github";
 }
-const linkedinIleGiris = () => {
+const linkedinIleKayit = () => {
   window.location.href = "http://localhost:5000/api/sosyal/linkedin";
 }
 
@@ -71,10 +79,10 @@ const linkedinIleGiris = () => {
         <p>Sosyal platformlarla kayıt ol</p>
 
         <div className="social-icons">
-          <a href="button" onClick={googleIleGiris}><i className='bx bxl-google'></i></a>
+          <a href="button" onClick={googleIleKayit}><i className='bx bxl-google'></i></a>
           <a href="button"><i className='bx bxl-facebook'></i></a>
-          <a href="button" onClick={githubIleGiris}><i className='bx bxl-github'></i></a>
-          <a href="button" onClick={linkedinIleGiris}><i className='bx bxl-linkedin'></i></a>
+          <a href="button" onClick={githubIleKayit}><i className='bx bxl-github'></i></a>
+          <a href="button" onClick={linkedinIleKayit}><i className='bx bxl-linkedin'></i></a>
         </div>
       </form>
     </div>

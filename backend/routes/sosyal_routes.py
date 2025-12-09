@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, url_for, jsonify
+from flask import Blueprint, redirect, url_for, jsonify, session
 from database import db
 from models.user import User
 import os
@@ -22,7 +22,7 @@ def google_callback():
 
     email = userinfo.get("email")
     if not email:
-        return jsonify({"message":"Google'dan email alınamadı."}), 400
+        return redirect("http://localhost:3000/login?error=no_email")
     
     user=User.query.filter_by(email=email).first()
     
@@ -30,8 +30,11 @@ def google_callback():
         user=User(email=email, platformlar="google")
         db.session.add(user)
         db.session.commit()
-    return jsonify({"message":"Google ile giriş başarılı.",
-                    "user":{"id": user.id, "email": user.email}}), 
+    
+    session['user_email'] = user.email
+    session['user_id'] = user.id
+        
+    return redirect(f"http://localhost:3000/login?success=true&email={email}")
 
 
 @sosyal_routes.route('/github')
@@ -60,8 +63,10 @@ def github_callback():
         user=User(email=email, platformlar="github")
         db.session.add(user)
         db.session.commit()
-    return jsonify({"message":"GitHub ile giriş başarılı.",
-                    "user":{"id": user.id, "email": user.email}})
+        
+    session['user_email'] = user.email
+    session['user_id'] = user.id
+    return redirect(f"http://localhost:3000/login?success=true&email={email}")
     
 
 @sosyal_routes.route('/linkedin')
@@ -81,6 +86,6 @@ def linkedin_callback():
         user=User(email=email, platformlar="linkedin")
         db.session.add(user)
         db.session.commit()
-    return jsonify({"message":"LinkedIn ile giriş başarılı.",
-                    "user":{"id": user.id, "email": user.email}})
-    
+    session['user_email'] = user.email
+    session['user_id'] = user.id
+    return redirect(f"http://localhost:3000/login?success=true&email={email}")

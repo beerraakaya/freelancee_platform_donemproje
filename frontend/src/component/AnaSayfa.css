@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+.anasayfa-container {
+  width: 1000px;
+  height: 100vh;
+  background: linear-gradient(90deg, #e2e2e2, #c9d6ff);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ana-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  font-weight: 600;
+  font-size: 22px;
+  color: #333;
+}
+
+.user-icon {
+  font-size: 30px;
+  color: #333;
+  margin-right: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.user-icon:hover {
+  color: #7494ec;
+}
+
+.ana-content {
+  margin-top: 120px;
+  text-align: center;
+  color: #333;
+  width: 600px;
+}
+
+.ana-content h1 {
+  font-size: 48px;
+  font-weight: 600;
+}
+
+.ana-content p {
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+.ana-btn {
+  margin-top: 35px;
+  padding: 15px 35px;
+  background: #7494ec;
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 0 10px rgba(0,0,0,.1);
+}
+
+.ana-btn:hover {
+  background: #5677df;
+}
+
+.menu-dropdown {
+  position: absolute;
+  top: 45px;
+  right: 0 ;
+  background: #ffffff;
+  width: 180px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  padding: 10px 0;
+  z-index: 1000;
+
+  animation: fadeIn 0.3s ease;
+}
+
+.menu-item {
+  padding: 12px 20px;
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+.menu-item:hover {
+  background: #f0f4ff;
+  color: #7494ec;
+  padding-left: 25px;
+}
+
+.menu-dropdown::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #ffffff;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
