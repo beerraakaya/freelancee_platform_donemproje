@@ -1,5 +1,8 @@
 {
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/material": "^7.3.6",
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.9.6",
     "requests": "^0.3.0"

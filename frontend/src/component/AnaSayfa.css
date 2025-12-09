@@ -1,19 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 .anasayfa-container {
-  width: 1000px;
-  height: 100vh;
+  width: 100%;
+  min-height: 100vh;
   background: linear-gradient(90deg, #e2e2e2, #c9d6ff);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .ana-header {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
   align-items: center;
+  justify-content: space-between;
+  padding: 20px 32px;
 }
 
 .logo {
@@ -22,10 +19,13 @@
   color: #333;
 }
 
+.user-area {
+  position: relative;
+}
+
 .user-icon {
   font-size: 30px;
   color: #333;
-  margin-right: 10px;
   cursor: pointer;
   transition: 0.3s;
 }
@@ -61,7 +61,7 @@
   font-size: 18px;
   cursor: pointer;
   transition: 0.3s;
-  box-shadow: 0 0 10px rgba(0,0,0,.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, .1);
 }
 
 .ana-btn:hover {
@@ -71,12 +71,12 @@
 .menu-dropdown {
   position: absolute;
   top: 45px;
-  right: 0 ;
+  right: 0;
   background: #ffffff;
   width: 180px;
   border: 1px solid #ddd;
   border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
   padding: 10px 0;
   z-index: 1000;
 
@@ -91,6 +91,7 @@
   transition: all 0.2s ease;
   font-weight: 500;
 }
+
 .menu-item:hover {
   background: #f0f4ff;
   color: #7494ec;
@@ -108,11 +109,13 @@
   border-right: 8px solid transparent;
   border-bottom: 8px solid #ffffff;
 }
+
 @keyframes fadeIn {
   from {
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
