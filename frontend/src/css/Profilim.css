@@ -1,0 +1,93 @@
+.profil-page{ padding: 8px; }
+
+.profil-title h2{ margin:0; font-size:28px; font-weight:700; }
+.profil-title p{ margin:6px 0 18px; opacity:.75; }
+
+.profil-card{
+  display:grid;
+  grid-template-columns: 280px 1fr;
+  gap:20px;
+  background:#fff;
+  border:1px solid #e6e6e6;
+  border-radius:16px;
+  padding:18px;
+  box-shadow:0 12px 28px rgba(0,0,0,.06);
+}
+
+.profil-left{
+  border-right:1px dashed #e8e8e8;
+  padding-right:18px;
+}
+
+.avatar-box{ display:flex; flex-direction:column; gap:14px; }
+
+.avatar{
+  width:160px; height:160px; border-radius:999px;
+  background:#f3f6ff; border:1px solid #e2e6ff;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden; margin-top:6px;
+}
+
+.avatar img{ width:100%; height:100%; object-fit:cover; }
+.avatar span{ font-weight:700; opacity:.6; }
+
+.avatar-actions{ display:flex; gap:10px; flex-wrap:wrap; }
+
+.mini-info .name{ font-weight:700; font-size:18px; }
+
+.badge{
+  display:inline-block; margin-top:6px;
+  padding:6px 10px; border-radius:999px;
+  background:#f0f4ff; color:#2f55d4;
+  font-weight:600; font-size:13px;
+}
+
+.profil-right .grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:14px;
+}
+
+.field{ display:flex; flex-direction:column; gap:6px; }
+.field label{ font-weight:600; font-size:13px; opacity:.8; }
+
+.field input{
+  height:42px; border:1px solid #ddd; border-radius:12px;
+  padding:0 12px; outline:none;
+}
+
+.field input:focus{
+  border-color:#7494ec;
+  box-shadow:0 0 0 4px rgba(116,148,236,.18);
+}
+
+.full{ grid-column:1 / -1; }
+
+.cv-row{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.cv-link{ margin-top:10px; }
+.cv-link a{ text-decoration:none; font-weight:600; }
+
+.actions{ margin-top:16px; display:flex; justify-content:flex-end; }
+
+.btn-primary{
+  border:none; border-radius:12px;
+  padding:12px 18px; cursor:pointer;
+  background:#7494ec; color:#fff; font-weight:700;
+}
+
+.btn-outline{
+  border:1px solid #ddd; border-radius:12px;
+  padding:10px 14px; cursor:pointer;
+  background:#fff; font-weight:600;
+}
+
+.btn-outline:disabled, .btn-primary:disabled{
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 900px){
+  .profil-card{ grid-template-columns: 1fr; }
+  .profil-left{ border-right:none; padding-right:0; border-bottom:1px dashed #e8e8e8; padding-bottom:16px; }
+  .profil-right .grid{ grid-template-columns: 1fr; }
+}

@@ -10,7 +10,14 @@ class User(db.Model):
     password = db.Column(db.String(255), nullable=True)
     platformlar = db.Column(db.String(50), default="local")
     olusturulma_tarihi = db.Column(db.DateTime, default=datetime.utcnow)
-
+    
+    profile= db.relationship(
+        "Profile",
+        backref="user",
+        uselist= False,
+        cascade="all, delete-orphan"
+    )
+    
     def set_password(self, password: str):
         self.password = generate_password_hash(password)
 

@@ -1,0 +1,1 @@
+export default function IsBasvurularim(){ return <h2>İş Başvurularım</h2>; }

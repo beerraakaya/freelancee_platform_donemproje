@@ -13,7 +13,9 @@ const LoginForm = () => {
           setMessage("Sosyal platform ile giriş başarılı. Hoşgeldiniz " + params.get("email"));
 
           setTimeout(() => {
-            navigate("/");
+            const hedef= sessionStorage.getItem('redirectPath') || "/";
+            sessionStorage.removeItem('redirectPath');
+            navigate(hedef, { replace: true });
             
           }, 1500);
         }
@@ -45,9 +47,11 @@ const LoginForm = () => {
             } else {
                 setMessageType("success");
                 setMessage('Giriş başarılı.');
+                const hedef= sessionStorage.getItem('redirectPath') || "/";
+                sessionStorage.removeItem('redirectPath');
                 setTimeout(() => {
 
-                    navigate("/");
+                    navigate(hedef, { replace: true });
                 }, 1500);
             }
         } catch (error) {
@@ -57,10 +61,12 @@ const LoginForm = () => {
     };
 
 const googleIleGiris=()=>{
+  sessionStorage.setItem('redirectPath', location.pathname);
     window.location.href = 'http://localhost:5000/api/sosyal/google';
 }
 
 const githubIleGiris=()=>{
+  sessionStorage.setItem('redirectPath', location.pathname);
   window.location.href = 'http://localhost:5000/api/sosyal/github';
 }
 

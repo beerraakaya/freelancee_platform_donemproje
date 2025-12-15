@@ -1,26 +1,56 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
 .anasayfa-container {
   width: 100%;
   min-height: 100vh;
   background: linear-gradient(90deg, #e2e2e2, #c9d6ff);
 }
-
 .ana-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 20px 32px;
+  width: 100%;
+  box-sizing: border-box;
 }
-
 .logo {
   font-weight: 600;
   font-size: 22px;
   color: #333;
+  cursor: pointer;
+  white-space: nowrap;
 }
+.search-bar {
+  flex: 1;
+  max-width: 500px;
+  display: flex ;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .06) ;
+}
+.search-bar input{
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 5px 10px;
+  font-size: 15px;
+  font-family: "Poppins", sans-serif;
+}
+.search-bar button {
+  border: none;
+  cursor: pointer;
+  padding: 0 14px;
+  height: 44px;
+  background: transparent;
+  font-size: 18px;
+}
+
 
 .user-area {
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .user-icon {
@@ -32,40 +62,6 @@
 
 .user-icon:hover {
   color: #7494ec;
-}
-
-.ana-content {
-  margin-top: 120px;
-  text-align: center;
-  color: #333;
-  width: 600px;
-}
-
-.ana-content h1 {
-  font-size: 48px;
-  font-weight: 600;
-}
-
-.ana-content p {
-  font-size: 18px;
-  margin-top: 20px;
-}
-
-.ana-btn {
-  margin-top: 35px;
-  padding: 15px 35px;
-  background: #7494ec;
-  border: none;
-  border-radius: 10px;
-  color: #fff;
-  font-size: 18px;
-  cursor: pointer;
-  transition: 0.3s;
-  box-shadow: 0 0 10px rgba(0, 0, 0, .1);
-}
-
-.ana-btn:hover {
-  background: #5677df;
 }
 
 .menu-dropdown {
@@ -108,7 +104,40 @@
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
   border-bottom: 8px solid #ffffff;
+}.ana-content {
+  margin-top: 120px;
+  text-align: center;
+  color: #333;
+  width: 600px;
 }
+
+.ana-content h1 {
+  font-size: 48px;
+  font-weight: 600;
+}
+
+.ana-content p {
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+.ana-btn {
+  margin-top: 35px;
+  padding: 15px 35px;
+  background: #7494ec;
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+}
+
+.ana-btn:hover {
+  background: #5677df;
+}
+
 
 @keyframes fadeIn {
   from {

@@ -9,11 +9,15 @@
     text-decoration: none;
     list-style: none;
 }
+.auth-page{
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(90deg, #e2e2e2, #c9d6ff);
+}
 
 body{
-    display: flex;
-    justify-content: center;
-    align-items: center;
     min-height: 100vh;
     background: linear-gradient(90deg, #e2e2e2, #c9d6ff);
 }

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./LoginRegister.css";
+import "../css/LoginRegister.css";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 import TogglePanel from "./Panel";
@@ -8,6 +8,7 @@ const LoginRegister = () => {
   const [active, setActive] = useState(false);
 
   return (
+    <div className="auth-page">
     <div className={active ? "container active" : "container"}>
       <LoginForm />
       <RegisterForm />
@@ -15,6 +16,7 @@ const LoginRegister = () => {
       <TogglePanel
         setActive={setActive}
       />
+    </div>
     </div>
   );
 };

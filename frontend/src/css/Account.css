@@ -1,0 +1,36 @@
+.account-wrap{
+  display:flex;
+  gap:20px;
+  padding:24px 32px;
+}
+
+.account-menu{
+  width:220px;
+  background:#fff;
+  border:1px solid #ddd;
+  border-radius:12px;
+  padding:12px;
+  height: fit-content;
+}
+
+.account-link{
+  display:block;
+  padding:12px 10px;
+  border-radius:10px;
+  color:#333;
+  text-decoration:none;
+  font-weight:500;
+}
+
+.account-link.active, .account-link:hover{
+  background:#f0f4ff;
+}
+
+.account-content{
+  flex:1;
+  background:#fff;
+  border:1px solid #ddd;
+  border-radius:12px;
+  padding:18px;
+  min-height:300px;
+}
