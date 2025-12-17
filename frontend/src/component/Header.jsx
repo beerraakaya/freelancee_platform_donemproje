@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaUser } from "react-icons/fa";
+import { BsClipboard2PlusFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
 export default function Header() {
@@ -50,6 +51,16 @@ export default function Header() {
         const handleIconLoginClick = () => {
             setShowMenu(!showMenu);
         };
+
+        const handleİsVermeClick=()=>{
+            if(!isLoggedIn) {
+                sessionStorage.setItem("redirectPath", "/ilan-yayinla");
+                navigate("/login");
+                return;
+            }
+            navigate("/ilan-yayinla");
+
+        };
     
         const handleSearchSubmit=(e)=>{
             e.preventDefault();
@@ -74,6 +85,10 @@ export default function Header() {
                         />
                         <button type="submit" aria-label="Ara">🔍</button>
                     </form>
+
+                    <div className="header-right">
+
+                         <BsClipboard2PlusFill className="plus-icon" onClick={handleİsVermeClick}/>
                     
                     <div className="user-area">
                         <FaUser className="user-icon" onClick={handleIconLoginClick} />
@@ -92,6 +107,11 @@ export default function Header() {
                             </div>
                         )}
                     </div>
+                    
+                    </div>
+                    
+                    
+                    
                 </div>
         );
     };

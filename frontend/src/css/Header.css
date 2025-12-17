@@ -11,6 +11,11 @@
   width: 100%;
   box-sizing: border-box;
 }
+.header-right{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+}
 .logo {
   font-weight: 600;
   font-size: 22px;
@@ -52,9 +57,18 @@
   display: flex;
   align-items: center;
 }
+.plus-icon{
+  font-size: 20px;
+  color: #333;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.plus-icon :hover{
+  color:#7494ec ;
+}
 
 .user-icon {
-  font-size: 30px;
+  font-size: 20px;
   color: #333;
   cursor: pointer;
   transition: 0.3s;
@@ -138,6 +152,9 @@
   background: #5677df;
 }
 
+.plus-icon{
+
+}
 
 @keyframes fadeIn {
   from {

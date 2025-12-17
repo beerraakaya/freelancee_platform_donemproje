@@ -1,5 +1,7 @@
 import React,{useEffect, useRef, useState} from "react";
 import "../css/Profilim.css"
+import Cropper from "react-easy-crop";
+import {getResimKirpma} from "../utils/cropImage";
 
 export default function Profilim(){ 
     const fotoInput= useRef(null);
@@ -8,6 +10,12 @@ export default function Profilim(){
     const [saving, setSaving]= useState(false);
     const [uploadingCv, setUploadingCv]= useState(false);
     const [uploadingFoto, setUploadingFoto]= useState(false);
+
+    const [cropOpen, setCropOpen] = useState(false);
+    const [imageSrc, setImageSrc] = useState(null);
+    const [crop, setCrop] = useState({ x: 0, y: 0 });
+    const [zoom, setZoom] = useState(1);
+    const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
 
     const [profil, setProfil]= useState({
         ad: "",
@@ -43,7 +51,8 @@ export default function Profilim(){
                     cv_dosya_adi: data.cv_dosya_adi || null,
                 });
                 if(data.profil_foto){
-                    setFotoPreview("http://localhost:5000" + data.profil_foto);
+                  const url= "http://localhost:5000" + data.profil_foto;
+                  setFotoPreview(url+"?v="+ Date.now());
                 }
             }catch(e){
                 console.log(e);
@@ -63,37 +72,67 @@ export default function Profilim(){
         const file=e.target.files?.[0];
         if(!file) return;
 
-        const localPreview=URL.createObjectURL(file);
-        setFotoPreview(localPreview);
+        const url= URL.createObjectURL(file);
+        setImageSrc(url);
 
-        try{
-            setUploadingFoto(true);
-            const fd=new FormData();
-            fd.append("photo",file);
-
-            const res=await fetch("http://localhost:5000/api/profile/photo", {
-                method: "POST",
-                credentials: "include",
-                body: fd,
+        setCrop({ x: 0, y: 0 });
+        setZoom(1);
       
-            });
-            const data=await res.json().catch(()=>({}));
-            if(!res.ok) throw new Error(data.message||"Foto yüklenmedi");
+        setCroppedAreaPixels(null);
 
-            if (data.profil_foto){
-                const url="http://localhost:5000" + data.profil_foto;
-                setFotoPreview(url);
-                setProfil((p) => ({ ...p, profil_foto: data.profil_foto }));
-            }
-            alert("Profil fotoğrafı güncellendi.");
-        }catch(err){
-            console.log(err);
-            alert("Fotoğraf yüklemede hata oldu.");
-        }finally {
-            setUploadingFoto(false);
-        }
+        setCropOpen(true);
+      };
+
+    const onCropComplete=(_,croppedPixels)=>{
+      setCroppedAreaPixels(croppedPixels);
     };
+
+    const uploadFotoFile= async(file)=>{
+      setUploadingFoto(true);
+      try{
+        const fd = new FormData();
+        fd.append("photo", file);
+
+    const res = await fetch("http://localhost:5000/api/profile/photo", {
+      method: "POST",
+      credentials: "include",
+      body: fd, 
+      
+    });const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.message || "Foto yüklenmedi");
+
+    if (data.profil_foto) {
+      const url = "http://localhost:5000" + data.profil_foto + "?v=" + Date.now();
+      setFotoPreview(url);
+      setProfil((p) => ({ ...p, profil_foto: data.profil_foto }));
+    }
+
+    alert("Profil fotoğrafı güncellendi.");
+  } catch (err) {
+    console.log(err);
+    alert("Fotoğraf yüklemede hata oldu.");
+  } finally {
+    setUploadingFoto(false);
+  }
+};
     
+const cropKaydetVeYukle = async () => {
+  if (!imageSrc || !croppedAreaPixels) return;
+
+  try {
+    setUploadingFoto(true);
+    const blob = await getResimKirpma(imageSrc, croppedAreaPixels);
+    const file = new File([blob], "profile.jpg", { type: "image/jpeg" });
+
+    await uploadFotoFile(file);
+
+    setCropOpen(false);
+  } catch (e) {
+    console.log(e);
+    alert("Kırpma/yükleme sırasında hata oldu.");
+  } 
+};
+
     const onCvSec = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -164,6 +203,17 @@ export default function Profilim(){
       setSaving(false);
     }
   };
+  const mevcutFotoyuDuzenle = () => {
+  if (fotoPreview) {
+    setImageSrc(fotoPreview);   
+    setCrop({ x: 0, y: 0 });
+    setZoom(1);
+    setCroppedAreaPixels(null);
+    setCropOpen(true);
+  } else {
+    fotoInput.current?.click(); 
+  }
+};
 
   if (loading) return <div style={{ padding: "24px 32px" }}>Yükleniyor...</div>;
 
@@ -175,12 +225,25 @@ export default function Profilim(){
       </div>
 
       <form className="profil-card" onSubmit={kaydet}>
-        {/* SOL */}
         <div className="profil-left">
           <div className="avatar-box">
             <div className="avatar">
               {fotoPreview ? <img src={fotoPreview} alt="Profil" /> : <span>Foto</span>}
-            </div>
+              </div>
+               <button
+                type="button"
+                className="avatar-edit-btn"
+                onChange={onFotoSec}
+                ref={fotoInput}
+                onClick={()=> fotoInput.current?.click()}
+                disabled={uploadingFoto}
+                title="Düzenle"
+              >
+                <span className="avatar-edit-ico">✎</span>
+                <span className="avatar-edit-text">Edit</span>
+              </button>
+            
+           
 
             <div className="avatar-actions">
               <input
@@ -192,11 +255,13 @@ export default function Profilim(){
               />
               <button
                 type="button"
-                className="btn-outline"
+
+                className="avatar-edit-btn"
                 onClick={() => fotoInput.current?.click()}
                 disabled={uploadingFoto}
-              >
-                {uploadingFoto ? "Yükleniyor..." : "Fotoğraf Seç"}
+              > 
+              <span className="avatar-edit-ico">✎</span>
+              <span className="avatar-edit-text">Edit</span>
               </button>
             </div>
 
@@ -204,12 +269,12 @@ export default function Profilim(){
               <div className="name">
                 {(profil.ad || "Ad")} {(profil.soyad || "Soyad")}
               </div>
-              <div className="badge">Freelancer</div>
+              
             </div>
           </div>
         </div>
 
-        {/* SAĞ */}
+
         <div className="profil-right">
           <div className="grid">
             <div className="field">
@@ -262,6 +327,70 @@ export default function Profilim(){
           </div>
         </div>
       </form>
+
+      {cropOpen && (
+      <div className="crop-modal-overlay" onClick={() => !uploadingFoto && setCropOpen(false)}>
+      <div className="crop-modal" onClick={(e) => e.stopPropagation()}>
+      <div className="crop-header">
+        <h3>Fotoğrafı Ayarla</h3>
+        <button
+          type="button"
+          className="crop-close"
+          onClick={() => !uploadingFoto && setCropOpen(false)}
+        >
+          ✕
+        </button>
+      </div>
+
+      <div className="crop-area">
+        <Cropper
+          image={imageSrc}
+          crop={crop}
+          zoom={zoom}
+          aspect={1}                 
+          cropShape="round"          
+          showGrid={false}
+          onCropChange={setCrop}
+          onZoomChange={setZoom}
+          onCropComplete={onCropComplete}
+        />
+      </div>
+
+      <div className="crop-controls">
+        <label>
+          Zoom
+          <input
+            type="range"
+            min="1"
+            max="3"
+            step="0.01"
+            value={zoom}
+            onChange={(e) => setZoom(Number(e.target.value))}
+          />
+        </label>
+      </div>
+
+      <div className="crop-actions">
+        <button
+          type="button"
+          className="btn-outline"
+          onClick={() => setCropOpen(false)}
+          disabled={uploadingFoto}
+        >
+          İptal
+        </button>
+        <button
+          type="button"
+          className="btn-primary"
+          onClick={cropKaydetVeYukle}
+          disabled={uploadingFoto}
+        >
+          {uploadingFoto ? "Yükleniyor..." : "Kaydet ve Yükle"}
+        </button>
+      </div>
+    </div>
+  </div>
+)}
     </div>
   );
 }

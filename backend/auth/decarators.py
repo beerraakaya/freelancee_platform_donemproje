@@ -10,3 +10,5 @@ def giris_kontrolu(f):
             return jsonify({"message":"Giriş yapmanız gerekiyor.", "is_logged_in":False}), 401
         return f(*args, **kwargs)
     return decorated_function
+
+    

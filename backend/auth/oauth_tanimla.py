@@ -6,8 +6,6 @@ oauth=OAuth()
 def oauth_tanimla(app):
     oauth.init_app(app)
     
-    print("LINKEDIN ID:", os.getenv("LINKEDIN_CLIENT_ID"))
-    print("LINKEDIN SECRET:", os.getenv("LINKEDIN_CLIENT_SECRET"))
     
     
     GOOGLE_CLIENT_ID=os.getenv("GOOGLE_CLIENT_ID")
