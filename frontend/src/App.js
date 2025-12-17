@@ -7,6 +7,8 @@ import AccountLayout from "./component/AccountLayout.jsx";
 import Profilim from "./component/Profilim.jsx";
 import Ilanlarim from "./component/Isilanlarim.jsx";
 import Basvurularim from "./component/IsBasvurularim.jsx";
+import SifremiUnuttum from "./component/SifremiUnuttum.jsx";
+import SifreSifirlama from "./component/SifreSifirlama.jsx";
 import "boxicons/css/boxicons.min.css";
 import { Routes, Route, Navigate} from "react-router-dom";
 import RequireAuth from "./component/RequireAuth.jsx";
@@ -53,6 +55,10 @@ function App() {
    <Routes>
     <Route element={<AuthLayout/>}>
     <Route path="/login" element={<LoginRegister />} />
+
+    <Route path="/sifremi-unuttum" element={<SifremiUnuttum />} />
+    <Route path="/sifre-sifirlama" element={<SifreSifirlama />} />
+
     </Route>
 
       <Route element={<Layout />}>

@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const LoginForm = () => {
     const location=useLocation();
@@ -91,7 +92,7 @@ const linkedinIleGiris=()=>{
         </div>
 
         <div className="forgot-link">
-          <a href="#"> Şifreni mi Unuttun?</a>
+          <Link to="/sifremi-unuttum"> Şifreni mi Unuttun?</Link>
         </div>
 
         {message && (<p className={messageType === "error" ? "error-text" : "success-text"}>{message}</p>)}

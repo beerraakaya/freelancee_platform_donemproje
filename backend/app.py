@@ -10,11 +10,13 @@ from models.profile import Profile
 from routes.user_routes import user_routes
 from routes.profile_routes import profile_routes
 from routes.sosyal_routes import sosyal_routes
+from routes.password_routes import password_routes
 from auth.oauth_tanimla import oauth_tanimla
+from extensions import mail
 from routes.job_routes import job_routes
 
 app=Flask(__name__)
-app.secret_key="supersecretkey"
+app.secret_key=app.config["SECRET_KEY"]
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax' 
 app.config['SESSION_COOKIE_SECURE'] = False
 app.config['SESSION_COOKIE_PATH'] = '/'
@@ -24,9 +26,9 @@ app.config.from_object(Config)
 
 app.register_blueprint(user_routes)
 app.register_blueprint(profile_routes)
-
 app.register_blueprint(sosyal_routes)
 app.register_blueprint(job_routes)
+app.register_blueprint(password_routes)
 
 BASE_DIR=os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER= os.path.join(BASE_DIR, "uploads")
@@ -39,6 +41,7 @@ app.config["MAX_CONTENT_LENGTH"]= 10 * 1024 * 1024
 
 
 db.init_app(app)
+mail.init_app(app)
 oauth_tanimla(app)
 
 with app.app_context():

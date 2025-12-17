@@ -1,0 +1,26 @@
+/* Sayfa arka planı LoginRegister ile aynı */
+.pw-page{
+  min-height: 100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 24px 16px;
+  background: linear-gradient(90deg, #e2e2e2, #c9d6ff);
+}
+
+/* Tek kart */
+.pw-card{
+  width: 460px;
+  max-width: calc(100vw - 32px);
+  background: #fff;
+  border-radius: 30px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, .2);
+  padding: 36px;
+}
+
+.pw-card h1{
+  font-size: 32px;
+  margin: 0 0 10px;
+  text-align:center;
+  color:#333;
+}

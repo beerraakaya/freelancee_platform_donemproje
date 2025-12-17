@@ -1,0 +1,67 @@
+.reset-page{
+  min-height: 100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 24px 16px;
+  background: linear-gradient(90deg, #e2e2e2, #c9d6ff);
+}
+
+.reset-card{
+  width: 460px;
+  max-width: calc(100vw - 32px);
+  background: #fff;
+  border-radius: 30px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, .2);
+  padding: 36px;
+}
+
+.reset-card h1{
+  font-size: 32px;
+  margin: 0 0 10px;
+  text-align:center;
+  color:#333;
+}
+
+.reset-desc{
+  font-size: 14.5px;
+  color: #666;
+  text-align:center;
+  margin-bottom: 18px;
+  line-height: 1.5;
+}
+
+.reset-card .input-box{
+  margin: 18px 0;
+}
+
+.reset-hint{
+  font-size: 12.5px;
+  color: #888;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.reset-card .btn{
+  margin-top: 6px;
+}
+
+.reset-bottom{
+  margin-top: 14px;
+  text-align: center;
+}
+
+.reset-bottom a{
+  font-size: 14.5px;
+  color:#8a9ee0;
+}
+
+.reset-bottom a:hover{
+  text-decoration: underline;
+}
+
+@media screen and (max-width: 400px){
+  .reset-card{ padding: 24px; }
+  .reset-card h1{ font-size: 28px; }
+}
