@@ -9,6 +9,8 @@ import Ilanlarim from "./component/Isilanlarim.jsx";
 import Basvurularim from "./component/IsBasvurularim.jsx";
 import SifremiUnuttum from "./component/SifremiUnuttum.jsx";
 import SifreSifirlama from "./component/SifreSifirlama.jsx";
+import TamamlananIsler from "./component/TamamlananIsler.jsx";
+import IlanDuzenle from "./component/IlanDuzenle.jsx";
 import "boxicons/css/boxicons.min.css";
 import { Routes, Route, Navigate} from "react-router-dom";
 import RequireAuth from "./component/RequireAuth.jsx";
@@ -64,11 +66,14 @@ function App() {
       <Route element={<Layout />}>
         <Route path="/" element={<AnaSayfa />} />
         <Route path="/ilan-yayinla" element={<IlanYayinla/>}/>
+        <Route path="/ilan-duzenle/:id" element={<IlanDuzenle />} />
         <Route path="/account" element={<AccountLayout />}>
           <Route index element={<Navigate to="/account/profil" replace />} />
           <Route path="profil" element={<Profilim />} />
           <Route path="ilanlar" element={<Ilanlarim />} />
           <Route path="basvurular" element={<Basvurularim />} />
+          <Route path="tamamlananisler" element={<TamamlananIsler/>}/>
+
           
       </Route>
 

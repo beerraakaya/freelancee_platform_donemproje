@@ -65,7 +65,6 @@ export default function AnaSayfa(){
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.message || "Başvuru başarısız");
 
-      // UI güncelle
       setAppliedIds((prev) => new Set([...prev, jobId]));
       alert("Başvurun alındı.");
     } catch (e) {
@@ -94,7 +93,8 @@ export default function AnaSayfa(){
                 <div style={{ textAlign: "right" }}>
                   {j.ucret_tutar != null && j.ucret_para_birimi ? (
                     <div style={{ fontWeight: 700 }}>
-                      {j.ucret_tutar} {j.ucret_para_birimi}
+                      {j.ucret_tutar} {j.ucret_para_birimi} 
+                       
                     </div>
                   ) : (
                     <div style={{ opacity: 0.7 }}>Ücret belirtilmedi</div>
@@ -109,6 +109,7 @@ export default function AnaSayfa(){
                   onClick={() => apply(j.id)}
                   disabled={applied}
                   style={{
+                    backgroundColor: "#0edd00", 
                     padding: "10px 14px",
                     borderRadius: 10,
                     border: "1px solid #ccc",

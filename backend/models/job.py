@@ -17,3 +17,10 @@ class Job(db.Model):
 
     
     created_at= db.Column(db.DateTime, default=datetime.utcnow)
+    
+    tamamlandi= db.Column(db.Boolean, default=False, nullable=False)
+    
+    tamamlanma_zamani= db.Column(db.DateTime, nullable=True)
+    
+    guncelleme_zamani=db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    

@@ -1,0 +1,62 @@
+.myjobs-wrap{ padding: 24px; }
+.myjobs-title{ margin: 0 0 14px; font-size: 28px; }
+
+.myjobs-empty{
+  background:#fff;
+  border:1px solid rgba(0,0,0,.08);
+  border-radius:16px;
+  padding:16px;
+  opacity:.8;
+}
+
+.myjobs-list{ display:grid; gap:12px; }
+
+.myjobs-card{
+  background:#fff;
+  border:1px solid rgba(0,0,0,.08);
+  border-radius:16px;
+  padding:14px;
+  box-shadow:0 10px 22px rgba(0,0,0,.06);
+}
+
+.myjobs-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.myjobs-baslik{ font-weight:800; font-size:16px; color:#222; }
+
+.myjobs-actions{ display:flex; gap:10px; }
+
+.myjobs-edit{
+  border: 1px solid rgba(0,0,0,.15);
+  background: #fff;
+  color: #333;
+  border-radius: 12px;
+  padding: 10px 12px;
+  cursor: pointer;
+  font-weight: 700;
+}
+.myjobs-edit:hover{ background: rgba(116,148,236,.10); }
+
+.myjobs-done{
+  border:0;
+  border-radius:12px;
+  padding:10px 12px;
+  cursor:pointer;
+  font-weight:800;
+  background:#2a9d8f;
+  color:#fff;
+}
+.myjobs-done:disabled{ opacity:.65; cursor:not-allowed; }
+
+.myjobs-desc{
+  margin-top:8px;
+  color:rgba(0,0,0,.75);
+  line-height:1.5;
+  white-space:pre-wrap;
+}
+
+.myjobs-pay{ margin-top:10px; font-size:14px; opacity:.85; }

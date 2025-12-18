@@ -1,0 +1,48 @@
+.done-wrap{ padding: 24px; }
+.done-title{ margin: 0 0 14px; font-size: 28px; }
+
+.done-empty{
+  background:#fff;
+  border:1px solid rgba(0,0,0,.08);
+  border-radius:16px;
+  padding:16px;
+  opacity:.8;
+}
+
+.done-list{ display:grid; gap:12px; }
+
+.done-card{
+  background:#fff;
+  border:1px solid rgba(0,0,0,.08);
+  border-radius:16px;
+  padding:14px;
+  box-shadow:0 10px 22px rgba(0,0,0,.06);
+}
+
+.done-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.done-baslik{ font-weight:800; font-size:16px; color:#222; }
+
+.done-badge{
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  background: rgba(42,157,143,.15);
+  color: #2a9d8f;
+  border: 1px solid rgba(42,157,143,.35);
+}
+
+.done-desc{
+  margin-top:8px;
+  color:rgba(0,0,0,.75);
+  line-height:1.5;
+  white-space:pre-wrap;
+}
+
+.done-pay{ margin-top:10px; font-size:14px; opacity:.85; }

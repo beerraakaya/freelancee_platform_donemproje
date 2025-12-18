@@ -99,6 +99,7 @@ export default function Header() {
                                         <div className="menu-item" onClick={() => goAccount("profil")}>Profilim</div>
                                         <div className="menu-item" onClick={() => goAccount("ilanlar")}>İş İlanlarım</div>
                                         <div className="menu-item" onClick={() => goAccount("basvurular")}>İş Başvurularım</div>
+                                        <div className="menu-item" onClick={()=> goAccount("tamamlananisler")}>Tamamlanan İşler</div>
                                         <div className="menu-item" onClick={handleLogout}>Çıkış Yap</div>
                                     </>
                                 ) : (

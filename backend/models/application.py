@@ -14,3 +14,4 @@ class Application(db.Model):
     __table_args__ = (
         db.UniqueConstraint("job_id", "user_id", name="uq_job_user"),
     )
+    
