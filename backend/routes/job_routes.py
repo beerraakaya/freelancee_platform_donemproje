@@ -6,7 +6,8 @@ from models.profile import Profile
 from models.application import Application
 from decimal import Decimal, InvalidOperation
 from datetime import datetime
-
+from models.bildirim import Bildirim
+from models.user import User
 
 job_routes=Blueprint("job_routes", __name__,url_prefix="/api")
 
@@ -92,10 +93,29 @@ def apply_job(job_id):
 
     existing = Application.query.filter_by(job_id=job_id, user_id=user_id).first()
     if existing:
-        return jsonify({"message": "Bu ilana zaten başvurdun."}), 409
+        return jsonify({"message": "Bu ilana zaten başvurdunuz."}), 409
 
     app = Application(job_id=job_id, user_id=user_id)
     db.session.add(app)
+    db.session.flush()
+    
+    
+    
+    profil= Profile.query.filter_by(user_id=user_id).first()
+    ad=(profil.ad or "").strip() if profil else ""
+    soyad=(profil.soyad or "").strip() if profil else ""
+    basvuran_adi= (f"{ad} {soyad}").strip() or "Bir kullanıcı"
+    mesaj = f"{basvuran_adi} '{job.baslik}' ilanınıza başvurdu."
+
+    notif = Bildirim(
+        user_id=job.user_id, 
+        type="job_application",
+        message=mesaj,
+        related_job_id=job.id,
+        related_application_id=app.id
+    )
+    db.session.add(notif)
+
     db.session.commit()
 
     return jsonify({"message": "Başvuru alındı."}), 201
@@ -257,3 +277,59 @@ def my_applications():
                 "tamamlanma_zamani": job.tamamlanma_zamani.isoformat() if job.tamamlanma_zamani else None,    
             })    
     return jsonify(result),200
+
+
+@job_routes.route("/jobs/<int:job_id>/applicants", methods=["GET"])
+@giris_kontrolu
+def job_applicants(job_id):
+     job=Job.query.get(job_id)
+     if not job:
+         return jsonify({"message": "İlan Bulunamadı."}),404
+     
+     rows=(
+         db.session.query(Application,Profile)
+         .outerjoin(Profile, Profile.user_id==Application.user_id)
+         .filter(Application.job_id==job_id)
+         .order_by(Application.created_at.desc()).all()
+     )
+     
+     result=[]
+     for app, profil in rows:
+            result.append({
+            "id": app.id,
+            "user_id": app.user_id,
+            "created_at": app.created_at.isoformat() if app.created_at else None,
+            "ad": profil.ad if profil else None,
+            "soyad": profil.soyad if profil else None,
+            "profil_foto": profil.profil_foto if profil else None,
+        })
+
+     return jsonify(result), 200
+ 
+ 
+@job_routes.route("/jobs/<int:job_id>/applicants/<int:applicant_id>/profile", methods=["GET"])
+@giris_kontrolu
+def get_applicant_profile(job_id,applicant_id):
+    
+    job=Job.query.get(job_id)
+    if not job:
+        return jsonify({"message": "İlan bulunamadı."},404)
+    
+    app = Application.query.filter_by(job_id=job_id, user_id=applicant_id).first()
+    if not app:
+        return jsonify({"message": "Bu kullanıcı bu ilana başvurmamış."}), 404
+    
+    profil = Profile.query.filter_by(user_id=applicant_id).first()
+
+    return jsonify({
+        "user_id": applicant_id,
+        "ad": profil.ad if profil else None,
+        "soyad": profil.soyad if profil else None,
+        "github": profil.github if profil else None,
+        "linkedin": profil.linkedin if profil else None,
+        "profil_foto": profil.profil_foto if profil else None,
+        "cv_dosya": profil.cv_dosya if profil else None,
+        "cv_dosya_adi": profil.cv_dosya_adi if profil else None,
+    }), 200
+ 
+ 

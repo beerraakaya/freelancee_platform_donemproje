@@ -7,6 +7,7 @@ from config import Config
 from database import db
 from models.user import User
 from models.profile import Profile
+from models.bildirim import Bildirim
 from routes.user_routes import user_routes
 from routes.profile_routes import profile_routes
 from routes.sosyal_routes import sosyal_routes
@@ -14,6 +15,7 @@ from routes.password_routes import password_routes
 from auth.oauth_tanimla import oauth_tanimla
 from extensions import mail
 from routes.job_routes import job_routes
+from routes.bildirim_routes import bildirim_routes
 
 app=Flask(__name__)
 app.secret_key=app.config["SECRET_KEY"]
@@ -29,6 +31,7 @@ app.register_blueprint(profile_routes)
 app.register_blueprint(sosyal_routes)
 app.register_blueprint(job_routes)
 app.register_blueprint(password_routes)
+app.register_blueprint(bildirim_routes)
 
 BASE_DIR=os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER= os.path.join(BASE_DIR, "uploads")

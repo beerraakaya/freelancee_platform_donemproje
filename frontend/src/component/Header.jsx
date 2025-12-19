@@ -1,16 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef} from "react";
 import { FaUser } from "react-icons/fa";
+import { FaBell } from "react-icons/fa";
 import { BsClipboard2PlusFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
 export default function Header() {
      const navigate = useNavigate();
+     const bildirimRef= useRef(null);
+     const userRef= useRef(null);
     
         const [isLoggedIn, setIsLoggedIn] = useState(false);
     
         const [showMenu, setShowMenu] = useState(false);
         
         const[searchQuery,setSearchQuery]=useState(""); 
+
+        const [bildirimAc, setbildirimAc] = useState(false);
+        const [bildirimler, setbildirimler] = useState([]);
+        const [unreadCount, setUnreadCount] = useState(0);
+
+        useEffect(()=>{
+            const handleClickOut=(e)=>{
+                if (bildirimRef.current && !bildirimRef.current.contains(e.target)){
+                    setbildirimAc(false)
+                }
+
+                if (userRef.current&& !userRef.current.contains(e.target)){
+                    setShowMenu(false);
+                }
+            };
+            document.addEventListener("mousedown", handleClickOut);
+            return ()=> document.removeEventListener("mousedown", handleClickOut);
+        },[])
+        
+
     
         useEffect(() => {
             checkLoginStatus();
@@ -49,6 +72,7 @@ export default function Header() {
         };
     
         const handleIconLoginClick = () => {
+            setbildirimAc(false);
             setShowMenu(!showMenu);
         };
 
@@ -73,6 +97,39 @@ export default function Header() {
             setShowMenu(false);
             navigate(`/account/${subPath}`);
         };
+
+        const fetchBildirim= async()=>{
+            try{
+                const res= await fetch ("http://localhost:5000/api/notifications", {
+                    credentials:"include",
+                });
+                const data= await res.json().catch(()=>({}));
+                if(!res.ok) return;
+
+                setbildirimler(data.bildirimler||[]);
+                setUnreadCount(data.unreadCount||0);
+            }catch(e){
+                console.log(e);
+            }
+        };
+        useEffect(()=>{
+            fetchBildirim();
+            const t= setInterval(fetchBildirim,15000);
+            return()=> clearInterval(t);
+        },[]);
+
+        const okundu_isaretle = async (id) => {
+            try {
+                await fetch(`http://localhost:5000/api/notifications/${id}/read`, {
+                method: "PATCH",
+                credentials: "include",
+            });
+            fetchBildirim();
+            } catch (e) {
+                console.log(e);
+            }
+        };
+
         
         return (
             <div className="ana-header">
@@ -85,12 +142,51 @@ export default function Header() {
                         />
                         <button type="submit" aria-label="Ara">🔍</button>
                     </form>
+                  <div className="header-right">
+                    <div ref={bildirimRef} className="notif-area">
 
-                    <div className="header-right">
+                <button
+                    type="button"
+                    className="notif-btn"
+                    onClick={() => {
+                        setShowMenu(false)
+                    setbildirimAc((v) => !v);
+                    fetchBildirim();
+                    }}
+                    aria-label="Bildirimler"
+                >
+                    <FaBell />
+                    {unreadCount > 0 && <span className="notif-badge">{unreadCount}</span>}
+                </button>
 
-                         <BsClipboard2PlusFill className="plus-icon" onClick={handleİsVermeClick}/>
+                {bildirimAc && (
+                    <div className="notif-dropdown">
+                    <div className="notif-title">Bildirimler</div>
+
+                    {bildirimler.length === 0 ? (
+                        <div className="notif-empty">Bildirim yok.</div>
+                    ) : (
+                        <div className="notif-list">
+                        {bildirimler.map((n) => (
+                            <div
+                            key={n.id}
+                            className={`notif-item ${n.is_read ? "read" : "unread"}`}
+                            onClick={() => okundu_isaretle(n.id)}
+                            role="button"
+                            tabIndex={0}
+                            >
+                            {n.message}
+                            </div>
+                        ))}
+                        </div>
+                    )}
+                    </div>
+                )}
+                </div>
+
+                <BsClipboard2PlusFill className="plus-icon" onClick={handleİsVermeClick} />
                     
-                    <div className="user-area">
+                    <div className="user-area" ref={userRef}>
                         <FaUser className="user-icon" onClick={handleIconLoginClick} />
                         {showMenu && (
                             <div className="menu-dropdown">

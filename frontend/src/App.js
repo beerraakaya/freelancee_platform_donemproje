@@ -16,6 +16,7 @@ import { Routes, Route, Navigate} from "react-router-dom";
 import RequireAuth from "./component/RequireAuth.jsx";
 import { useNavigate } from "react-router-dom";
 import IlanYayinla from "./component/IlanYayinla.jsx";
+import BasvuranProfil from "./component/BasvuranProfil.jsx";
 
 function App() {
   const [message, setMessage]= React.useState(null);
@@ -67,6 +68,7 @@ function App() {
         <Route path="/" element={<AnaSayfa />} />
         <Route path="/ilan-yayinla" element={<IlanYayinla/>}/>
         <Route path="/ilan-duzenle/:id" element={<IlanDuzenle />} />
+        <Route path="/ilan/:jobId/basvuran/:userId"  element={<BasvuranProfil/>}/>
         <Route path="/account" element={<AccountLayout />}>
           <Route index element={<Navigate to="/account/profil" replace />} />
           <Route path="profil" element={<Profilim />} />

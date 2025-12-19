@@ -15,6 +15,8 @@
   display:flex;
   align-items:center;
   gap: 10px;
+  position: relative;
+  z-index: 5;
 }
 .logo {
   font-weight: 600;
@@ -152,9 +154,9 @@
   background: #5677df;
 }
 
-.plus-icon{
-
-}
+.plus-icon:hover{
+    color:#7494ec ;
+  }
 
 @keyframes fadeIn {
   from {
@@ -166,4 +168,94 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+.header-actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  position: relative;
+}
+
+.notif-btn{
+  position: relative;
+  border: 0;
+  background: transparent;
+  padding: 0;              /* kutu hissini veren padding gitti */
+  margin: 0;
+  line-height: 1;
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #333;             /* diğer ikonlarla aynı ton */
+  font-size: 20px;         /* FaUser ile aynı */
+  transition: 0.3s;
+}
+
+.notif-badge{
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: #e11d48;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.notif-dropdown{
+  position: absolute;
+  right: 0;
+  top: 36px;
+  width: 320px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.10);
+  border-radius: 14px;
+  box-shadow: 0 12px 28px rgba(0,0,0,.10);
+  overflow: hidden;
+  z-index: 9999;
+}
+
+.notif-title{
+  padding: 12px 12px;
+  font-weight: 800;
+  border-bottom: 1px solid rgba(0,0,0,.08);
+}
+
+.notif-empty{
+  padding: 12px;
+  opacity: .75;
+}
+
+.notif-list{ max-height: 320px; overflow: auto; }
+
+.notif-item{
+  padding: 12px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(0,0,0,.06);
+  line-height: 1.35;
+}
+
+.notif-btn:hover{
+  color: #7494ec;
+}
+
+.notif-item.unread{ font-weight: 800; }
+.notif-item.read{ opacity: .8; }
+.notif-btn svg{
+  width: 20px;
+  height: 20px;
+}
+.notif-area{
+  position: relative;
+  display: flex;
+  align-items: center;
 }
