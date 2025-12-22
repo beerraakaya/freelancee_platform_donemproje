@@ -9,6 +9,8 @@ const RegisterForm = () => {
     const [message, setMessage] = useState(null);
     const [messageType, setMessageType] = useState(null);
 
+    const API = "http://localhost:5000";
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setMessage(null);
@@ -20,7 +22,7 @@ const RegisterForm = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ email, password }),
-                credentials: 'include', // backend oturum çerezi için şart
+                credentials: 'include', 
             });
             const data = await response.json();
 
@@ -40,14 +42,17 @@ const RegisterForm = () => {
             setMessage('Bir hata oluştu. Lütfen tekrar deneyiniz. (Backend çalışıyor mu?)');
         }
     };
-const googleIleKayit = () => {
-  window.location.href = "http://localhost:5000/api/sosyal/google";
+const googleIleKayit = (e) => {
+  e.preventDefault();
+  window.location.href =`${API}/api/sosyal/google`;
 };
-const githubIleKayit = () => {
-  window.location.href = "http://localhost:5000/api/sosyal/github";
+const githubIleKayit = (e) => {
+  e.preventDefault();
+  window.location.href = `${API}/api/sosyal/github`;
 }
-const linkedinIleKayit = () => {
-  window.location.href = "http://localhost:5000/api/sosyal/linkedin";
+const linkedinIleKayit = (e) => {
+  e.preventDefault();
+  window.location.href =`${API}/api/sosyal/linkedin`;
 }
 
 
@@ -79,10 +84,10 @@ const linkedinIleKayit = () => {
         <p>Sosyal platformlarla kayıt ol</p>
 
         <div className="social-icons">
-          <a href="button" onClick={googleIleKayit}><i className='bx bxl-google'></i></a>
-          <a href="button"><i className='bx bxl-facebook'></i></a>
-          <a href="button" onClick={githubIleKayit}><i className='bx bxl-github'></i></a>
-          <a href="button" onClick={linkedinIleKayit}><i className='bx bxl-linkedin'></i></a>
+          <a href="#" onClick={googleIleKayit}><i className='bx bxl-google'></i></a>
+          <a href="#"><i className='bx bxl-facebook'></i></a>
+          <a href="#" onClick={githubIleKayit}><i className='bx bxl-github'></i></a>
+          <a href="#" onClick={linkedinIleKayit}><i className='bx bxl-linkedin'></i></a>
         </div>
       </form>
     </div>

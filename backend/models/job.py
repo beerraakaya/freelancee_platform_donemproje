@@ -24,3 +24,20 @@ class Job(db.Model):
     
     guncelleme_zamani=db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
+    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "yayinlayan_ad": self.yayinlayan_ad,
+            "yayinlayan_soyad": self.yayinlayan_soyad,
+            "baslik": self.baslik,
+            "aciklama": self.aciklama,
+            "ucret_tutar": float(self.ucret_tutar) if self.ucret_tutar is not None else None,
+            "ucret_para_birimi": self.ucret_para_birimi,
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+            "tamamlandi": self.tamamlandi,
+            "tamamlanma_zamani": self.tamamlanma_zamani.isoformat() if self.tamamlanma_zamani else None,
+            "guncelleme_zamani": self.guncelleme_zamani.isoformat() if self.guncelleme_zamani else None,
+        }
+    

@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request, session
-from auth.decarators import giris_kontrolu
+from auth.decarators import giris_kontrolu, profil_dolu_kontrolu
 from database import db
 from models.job import Job
 from models.profile import Profile
@@ -7,16 +7,16 @@ from models.application import Application
 from decimal import Decimal, InvalidOperation
 from datetime import datetime
 from models.bildirim import Bildirim
-from models.user import User
+
 
 job_routes=Blueprint("job_routes", __name__,url_prefix="/api")
 
-def profili_getir(user_id):
-    return Profile.query.filter_by(user_id=user_id).first()
+
     
 
 
 @job_routes.route("/jobs", methods=["GET"])
+@giris_kontrolu
 def list_jobs():
     jobs=Job.query.order_by(Job.created_at.desc()).all()
     return jsonify([{
@@ -34,9 +34,11 @@ def list_jobs():
     
 @job_routes.route("/jobs", methods=["POST"])
 @giris_kontrolu
+@profil_dolu_kontrolu
 def create_job():
     user_id = session.get("user_id")
     data = request.get_json() or {}
+    
 
     baslik = (data.get("baslik") or "").strip()
     aciklama = (data.get("aciklama") or "").strip()
@@ -57,13 +59,11 @@ def create_job():
 
         if ucret_para_birimi not in ["TRY", "USD", "EUR"]:
             return jsonify({"message": "Para birimi TRY/USD/EUR olmalı."}), 400
-    
-    profil = profili_getir(user_id)
+        
+    profil = Profile.query.filter_by(user_id=user_id).first()
     ad = (profil.ad or "").strip() if profil else ""
     soyad = (profil.soyad or "").strip() if profil else ""
-
-    if not ad or not soyad:
-        return jsonify({"message": "İlan yayınlamak için önce Profilim kısmını doldurunuz."}), 400
+    
 
     job = Job(
         user_id=user_id,
@@ -81,6 +81,7 @@ def create_job():
 
 @job_routes.route("/jobs/<int:job_id>/apply", methods=["POST"])
 @giris_kontrolu
+@profil_dolu_kontrolu
 def apply_job(job_id):
     user_id = session.get("user_id")
 
@@ -111,8 +112,8 @@ def apply_job(job_id):
         user_id=job.user_id, 
         type="job_application",
         message=mesaj,
-        related_job_id=job.id,
-        related_application_id=app.id
+        ilgili_is_id=job.id,
+        ilgili_application_id=app.id
     )
     db.session.add(notif)
 
@@ -219,19 +220,17 @@ def update_job(job_id):
 @job_routes.route("/jobs/<int:job_id>", methods=["GET"])
 @giris_kontrolu
 def get_my_job(job_id):
+    
     user_id = session.get("user_id")
-    status = request.args.get("status", "active")
+    job = Job.query.get(job_id)
 
-    q = Job.query.filter(Job.user_id == user_id)
+    if not job:
+        return jsonify({"message": "İlan bulunamadı."}), 404
 
-    if status == "active":
-        q = q.filter(Job.tamamlanma_zamani.is_(None))
-    elif status == "completed":
-        q = q.filter(Job.tamamlanma_zamani.isnot(None))
+    if job.user_id != user_id:
+        return jsonify({"message": "Bu ilana erişim yetkin yok."}), 403
 
-    jobs = q.order_by(desc(Job.id)).all()
-    return jsonify([j.to_dict() for j in jobs]), 200
-
+    return jsonify(job.to_dict()), 200
 
 @job_routes.route("/applications/mine", methods=["GET"])
 @giris_kontrolu
@@ -313,7 +312,7 @@ def get_applicant_profile(job_id,applicant_id):
     
     job=Job.query.get(job_id)
     if not job:
-        return jsonify({"message": "İlan bulunamadı."},404)
+        return jsonify({"message": "İlan bulunamadı."}),404
     
     app = Application.query.filter_by(job_id=job_id, user_id=applicant_id).first()
     if not app:

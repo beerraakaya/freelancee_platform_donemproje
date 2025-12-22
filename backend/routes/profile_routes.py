@@ -1,8 +1,9 @@
 from flask import Blueprint, jsonify, request, session
 from database import db
 from models.user import User
+from sqlalchemy import func
 from models.profile import Profile
-from auth.decarators import giris_kontrolu
+from auth.decarators import giris_kontrolu, freelancer_profil_kontrolu
 import os
 from werkzeug.utils import secure_filename
 from flask import current_app
@@ -119,3 +120,42 @@ def upload_photo():
     db.session.commit()
 
     return jsonify({"message": "Profil foto güncellendi.", "profil_foto": profil.profil_foto}), 200
+
+
+@profile_routes.route("/freelancers", methods=["GET"])
+@giris_kontrolu
+def list_freelancers():
+    curret_user_id=session.get("user_id")
+    
+    q =(
+        Profile.query
+        .filter(Profile.ad.isnot(None),Profile.soyad.isnot(None))
+        .filter(func.length(func.trim(Profile.ad))>0)
+        .filter(func.length(func.trim(Profile.soyad))>0)
+    )
+    if curret_user_id:
+        q =q.filter(Profile.user_id!= curret_user_id)
+    
+    profiller= q.order_by(Profile.guncelleme_tarihi.desc()).all()
+    return jsonify([{
+        "user_id":p.user_id,
+        "ad": p.ad,
+        "soyad": p.soyad,
+        "profil_foto": p.profil_foto
+    } for p in profiller]),200
+    
+    
+@profile_routes.route("/freelancers/<int:user_id>", methods=["GET"])
+@giris_kontrolu
+@freelancer_profil_kontrolu
+def get_freelancer(user_id, profil):
+    return jsonify({
+        "user_id": profil.user_id,
+        "ad": profil.ad,
+        "soyad": profil.soyad,
+        "github": profil.github,
+        "linkedin": profil.linkedin,
+        "profil_foto": profil.profil_foto,
+        "cv_dosya": profil.cv_dosya,
+        "cv_dosya_adi": profil.cv_dosya_adi
+    }),200

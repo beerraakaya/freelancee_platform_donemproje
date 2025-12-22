@@ -16,3 +16,5 @@ class Bildirim(db.Model):
     
     ilgili_is_id=db.Column(db.Integer, nullable=True)
     ilgili_application_id= db.Column(db.Integer,nullable=True)
+    
+    

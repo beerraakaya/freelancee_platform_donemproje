@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, url_for, jsonify, session
+from flask import Blueprint, redirect, url_for, jsonify, session,current_app
 from database import db
 from models.user import User
 import os
@@ -6,6 +6,10 @@ from auth.oauth_tanimla import oauth
 
 
 sosyal_routes = Blueprint('sosyal_routes', __name__, url_prefix='/api/sosyal')
+
+def frontend_login_redirect(email: str):
+    base = current_app.config["FRONTEND_URL"].rstrip("/")
+    return redirect(f"{base}/login?success=true&email={email}")
 
 @sosyal_routes.route('/google')
 def google_giris():

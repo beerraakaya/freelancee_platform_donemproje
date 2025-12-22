@@ -3,6 +3,9 @@ import { FaUser } from "react-icons/fa";
 import { FaBell } from "react-icons/fa";
 import { BsClipboard2PlusFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import IsBulDropdown from "./IsBulDropdown";
+import FreelancerBul from "./FreelancerBul";
+import logo from "../resimler/freelancer.png"
 
 export default function Header() {
      const navigate = useNavigate();
@@ -86,6 +89,21 @@ export default function Header() {
 
         };
     
+        const handleBildirimClick=async()=>{
+            setShowMenu(false);
+
+            await checkLoginStatus();
+
+            if(!isLoggedIn){
+                sessionStorage.setItem("bildirim","/");
+                setbildirimAc(false);
+                navigate("/login");
+                return;
+            }
+            setbildirimAc((v)=>!v);
+            fetchBildirim();
+
+        }
         const handleSearchSubmit=(e)=>{
             e.preventDefault();
             const q= searchQuery.trim();
@@ -100,7 +118,7 @@ export default function Header() {
 
         const fetchBildirim= async()=>{
             try{
-                const res= await fetch ("http://localhost:5000/api/notifications", {
+                const res= await fetch ("http://localhost:5000/api/bildirim?only_unread=0", {
                     credentials:"include",
                 });
                 const data= await res.json().catch(()=>({}));
@@ -120,7 +138,7 @@ export default function Header() {
 
         const okundu_isaretle = async (id) => {
             try {
-                await fetch(`http://localhost:5000/api/notifications/${id}/read`, {
+                await fetch(`http://localhost:5000/api/bildirim/${id}/read`, {
                 method: "PATCH",
                 credentials: "include",
             });
@@ -132,8 +150,20 @@ export default function Header() {
 
         
         return (
-            <div className="ana-header">
-                    <h2 className="logo" onClick={()=> navigate("/")}>Freelance Platform</h2>
+            <div className="ana-header"> 
+                    <div className="header-left">
+                        <img
+                            src={logo}
+                            alt="Freelance Platform"
+                            className="logo-img"
+                            onClick={() => navigate("/")}
+                            />
+                        <IsBulDropdown />
+                        <FreelancerBul/>
+
+
+                        
+                    </div>
                     <form className="search-bar" onSubmit={handleSearchSubmit}>
                         <input type="text"
                         placeholder="Arama Yapınız"
@@ -148,11 +178,7 @@ export default function Header() {
                 <button
                     type="button"
                     className="notif-btn"
-                    onClick={() => {
-                        setShowMenu(false)
-                    setbildirimAc((v) => !v);
-                    fetchBildirim();
-                    }}
+                    onClick={handleBildirimClick}
                     aria-label="Bildirimler"
                 >
                     <FaBell />

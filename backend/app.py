@@ -23,7 +23,7 @@ app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 app.config['SESSION_COOKIE_SECURE'] = False
 app.config['SESSION_COOKIE_PATH'] = '/'
 
-CORS(app, supports_credentials=True, origins=["http://localhost:3000","http://127.0.0.1:3000"])
+CORS(app, supports_credentials=True, origins=["http://localhost:3000"])
 app.config.from_object(Config)
 
 app.register_blueprint(user_routes)

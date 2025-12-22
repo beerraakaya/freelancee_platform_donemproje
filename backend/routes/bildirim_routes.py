@@ -21,14 +21,14 @@ def list_bildirim():
 
     return jsonify({
         "unread_count": unread_count,
-        "notifications": [{
+        "bildirimler": [{
             "id": n.id,
             "type": n.type,
             "message": n.message,
             "is_read": n.is_read,
             "created_at": n.created_at.isoformat() if n.created_at else None,
-            "related_job_id": n.related_job_id,
-            "related_application_id": n.related_application_id,
+            "ilgili_job_id": n.ilgili_is_id,
+            "ilgili_application_id": n.ilgili_application_id,
         } for n in notifis]
     }),200
     
@@ -42,7 +42,7 @@ def okundu_isaretle(bildirim_id):
     n=Bildirim.query.get(bildirim_id)
     
     if not n or n.user_id!= user_id:
-        return 
+        return 404
     
     n.is_read=True
     db.session.commit()

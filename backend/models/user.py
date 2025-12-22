@@ -25,3 +25,4 @@ class User(db.Model):
         if not self.password:
             return False
         return check_password_hash(self.password, password)
+

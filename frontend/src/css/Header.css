@@ -11,20 +11,22 @@
   width: 100%;
   box-sizing: border-box;
 }
-.header-right{
+.header-left, .header-right{
   display:flex;
   align-items:center;
-  gap: 10px;
+  gap: 16px;
   position: relative;
   z-index: 5;
 }
-.logo {
-  font-weight: 600;
-  font-size: 22px;
-  color: #333;
+.logo-img {
+  height: 80px;   
+  width: 160px;
   cursor: pointer;
-  white-space: nowrap;
+  display:flex;
+
 }
+
+
 .search-bar {
   flex: 1;
   max-width: 500px;
@@ -180,7 +182,7 @@
   position: relative;
   border: 0;
   background: transparent;
-  padding: 0;              /* kutu hissini veren padding gitti */
+  padding: 0;             
   margin: 0;
   line-height: 1;
   cursor: pointer;
@@ -189,8 +191,8 @@
   align-items: center;
   justify-content: center;
 
-  color: #333;             /* diğer ikonlarla aynı ton */
-  font-size: 20px;         /* FaUser ile aynı */
+  color: #333;             
+  font-size: 20px;        
   transition: 0.3s;
 }
 
@@ -259,3 +261,9 @@
   display: flex;
   align-items: center;
 }
+.header-left{
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+:root{ --headerItemH: 44px; }
